@@ -1,0 +1,2763 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pobreza multidimensional en Uruguay</title>
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Pobreza multidimensional en Uruguay">
+  <meta property="og:description" content="Más allá del ingreso: qué significa ser pobre en Uruguay cuando el dinero no cuenta toda la historia.">
+  <meta property="og:image" content="https://tuperfil.github.io/pobreza-multidimensional/og_image.png">
+  <meta property="og:url" content="https://tuperfil.github.io/pobreza-multidimensional/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pobreza multidimensional en Uruguay">
+  <meta name="twitter:description" content="Más allá del ingreso: qué significa ser pobre en Uruguay cuando el dinero no cuenta toda la historia.">
+  <meta name="twitter:image" content="https://tuperfil.github.io/pobreza-multidimensional/og_image.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiM2QjNBNkIiLz48L3N2Zz4=">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400;1,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── TOKENS ───────────────────────────────────── */
+    :root {
+      --bg:        #F3F0EC;
+      --paper:     #FAF9F7;
+      --ink:       #201820;
+      --ink-soft:  #3D2A3D;
+      --muted:     #8A7A8A;
+      --line:      rgba(26,26,24,0.10);
+
+      --blue:      #6B3A6B;
+      --blue-mid:  #8A4E8A;
+      --blue-soft: #EEE4EE;
+      --amber:     #C4923A;
+      --amber-soft:#F5EDD8;
+      --teal:      #5A8E82;
+      --teal-soft: #DCF0EC;
+      --rose:      #A06AA0;
+      --rose-soft: #F0E4F0;
+
+      --serif:  'Spectral', Georgia, serif;
+      --sans:   'IBM Plex Sans', system-ui, sans-serif;
+      --mono:   'IBM Plex Mono', monospace;
+
+      --shadow-sm: 0 2px 12px rgba(26,26,24,0.08);
+      --shadow:    0 8px 40px rgba(26,26,24,0.12);
+      --shadow-lg: 0 24px 80px rgba(26,26,24,0.16);
+      --radius:    20px;
+      --max:       1160px;
+    }
+
+    /* ── RESET ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOPBAR ────────────────────────────────────── */
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 100;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      background: rgba(245,242,236,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    nav {
+      display: flex;
+      gap: 6px;
+    }
+
+    nav a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: all 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--ink);
+      background: var(--line);
+    }
+
+    /* ── HERO ──────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 32px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 40%, rgba(107,58,107,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(196,132,58,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      width: min(var(--max), 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--blue);
+      margin-bottom: 28px;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--blue);
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 5.5vw, 5.8rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--blue);
+    }
+
+    .hero-lead {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--blue);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(107,58,107,0.14);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--ink-soft);
+      color: var(--ink);
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      position: relative;
+    }
+
+    .uruguay-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .uruguay-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 55% 45%, rgba(107,58,107,0.05), transparent 70%);
+    }
+
+    .uy-shape {
+      width: 180px;
+      height: 240px;
+      margin: 0 auto 32px;
+      position: relative;
+      background: linear-gradient(160deg, var(--blue-soft), #D4E4F5);
+      border-radius: 48% 44% 52% 40% / 32% 56% 44% 60%;
+      border: 2px solid rgba(107,58,107,0.10);
+      box-shadow: inset 0 0 40px rgba(107,58,107,0.05);
+    }
+
+    .uy-dot {
+      position: absolute;
+      bottom: 38px;
+      left: 72px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 0 4px rgba(196,132,58,0.2);
+    }
+
+    .dim-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .dim-pill {
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .dim-pill.edu  { background: var(--blue-soft);  color: var(--blue); }
+    .dim-pill.viv  { background: var(--amber-soft); color: var(--amber); }
+    .dim-pill.serv { background: var(--teal-soft);  color: var(--teal); }
+    .dim-pill.prot { background: var(--rose-soft);  color: var(--rose); }
+    .dim-pill.emp  { background: #EDF0F5; color: #445; }
+
+    /* ── ACT HEADERS ───────────────────────────────── */
+    .act-header {
+      padding: 100px 32px 20px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .act-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .act-label span {
+      color: var(--blue);
+    }
+
+    .act-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .act-header p {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+
+    /* ── SCROLLY SECTIONS ──────────────────────────── */
+    .scrolly {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      width: min(var(--max), calc(100% - 64px));
+      margin: 0 auto;
+      padding: 40px 0 80px;
+      align-items: start;
+    }
+
+    .sticky-panel {
+      position: sticky;
+      top: 80px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .steps {
+      padding-top: 20px;
+    }
+
+    .step {
+      min-height: 65vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 0;
+      border-left: 2px solid var(--line);
+      padding-left: 32px;
+      transition: border-color 0.3s;
+    }
+
+    .step.active {
+      border-left-color: var(--blue);
+    }
+
+    .step-kicker {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+
+    .step h3 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+
+    .step p {
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+      max-width: 520px;
+    }
+
+    .step p + p {
+      margin-top: 12px;
+    }
+
+    .step strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ── PANEL VISUALS ─────────────────────────────── */
+
+    /* House comparison */
+    .house-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .house-col {
+      background: var(--paper);
+      padding: 28px 22px;
+    }
+
+    .house-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .house-income {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--amber);
+      background: var(--amber-soft);
+      padding: 3px 10px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .priv-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .priv-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      font-weight: 500;
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+
+    .priv-item.ok   { background: #EDFAF5; color: #1A6645; }
+    .priv-item.bad  { background: var(--rose-soft); color: var(--rose); }
+    .priv-item .ic  { font-size: 0.9rem; flex-shrink: 0; }
+
+    /* Lens cards */
+    .lens-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .lens-card {
+      background: var(--paper);
+      padding: 32px 24px;
+    }
+
+    .lens-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .lens-card:first-child .lens-icon { background: var(--blue-soft); }
+    .lens-card:last-child  .lens-icon { background: var(--teal-soft); }
+
+    .lens-card h4 {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .lens-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .lens-note {
+      padding: 20px 24px;
+      background: var(--blue-soft);
+      font-size: 0.88rem;
+      color: var(--blue);
+      font-weight: 500;
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    /* Pipeline */
+    .pipeline {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pipe-step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+    }
+
+    .pipe-n {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--ink);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .pipe-step strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: var(--ink);
+    }
+
+    .pipe-step span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* Dimensions grid */
+    .dim-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .dim-card {
+      background: var(--paper);
+      padding: 20px 14px;
+    }
+
+    .dim-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .dim-card:nth-child(1) .dim-icon { background: var(--blue-soft); }
+    .dim-card:nth-child(2) .dim-icon { background: var(--amber-soft); }
+    .dim-card:nth-child(3) .dim-icon { background: var(--teal-soft); }
+    .dim-card:nth-child(4) .dim-icon { background: var(--rose-soft); }
+    .dim-card:nth-child(5) .dim-icon { background: var(--teal-soft); }
+
+    .dim-card h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .dim-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .dim-card li {
+      font-size: 0.72rem;
+      color: var(--muted);
+      padding: 5px 7px;
+      background: var(--bg);
+      border-radius: 7px;
+      line-height: 1.3;
+    }
+
+    /* Threshold cards */
+    .threshold-list {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .threshold-card {
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+    }
+
+    .threshold-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      background: var(--blue-soft);
+      padding: 3px 9px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .threshold-card h4 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+
+    .threshold-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* Home unit */
+    .home-unit {
+      padding: 36px 28px;
+      text-align: center;
+    }
+
+    .family-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .person-fig {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .person-head {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      margin-bottom: -2px;
+    }
+
+    .person-body {
+      width: 40px;
+      height: 54px;
+      border-radius: 12px 12px 10px 10px;
+    }
+
+    .person-fig.neutral .person-head,
+    .person-fig.neutral .person-body { background: #DDE2EC; }
+
+    .person-fig.alert .person-head,
+    .person-fig.alert .person-body { background: var(--amber-soft); border: 1.5px solid rgba(196,132,58,0.3); }
+
+    .house-alert-box {
+      padding: 14px 18px;
+      background: var(--amber-soft);
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #7A4A10;
+      line-height: 1.5;
+    }
+
+    /* Circle rule */
+    .rule-panel {
+      padding: 36px 28px;
+      text-align: center;
+    }
+
+    .rule-big {
+      font-family: var(--serif);
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .rule-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .circle-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 0 auto 20px;
+      max-width: 320px;
+    }
+
+    .circ {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      border: 1.5px solid var(--line);
+      background: var(--bg);
+      color: var(--muted);
+    }
+
+    .circ.on  { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .circ.cut { background: var(--amber); color: var(--ink); border-color: var(--amber); }
+
+    .rule-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      max-width: 280px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Stats big numbers */
+    .stats-panel {
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .stat-row {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stat-row:last-child { border-bottom: none; }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 3.6rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--blue);
+    }
+
+    .stat-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Dumbbell chart — reemplaza slope con SVG */
+    .slope-panel {
+      padding: 32px 28px;
+    }
+
+    .slope-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .slope-years-header {
+      display: grid;
+      grid-template-columns: 130px 1fr 1fr;
+      gap: 0;
+      margin-bottom: 6px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .slope-years-header span {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .dumbbell-row {
+      display: grid;
+      grid-template-columns: 130px 1fr 1fr;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+      gap: 0;
+    }
+
+    .dumbbell-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .db-label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      line-height: 1.3;
+      padding-right: 12px;
+    }
+
+    .db-val {
+      font-family: var(--mono);
+      font-size: 1.45rem;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .db-val.old { color: var(--muted); }
+    .db-val.new { color: var(--ink); }
+
+    .db-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* Arrow is shown between the two columns via a pseudo layout */
+    .db-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      grid-column: span 2;
+      padding: 14px 0;
+    }
+
+    .db-track {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 0;
+    }
+
+    .db-node {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .db-connector {
+      flex: 1;
+      height: 2px;
+      position: relative;
+    }
+
+    .db-connector.dashed {
+      background: repeating-linear-gradient(
+        90deg,
+        currentColor 0px,
+        currentColor 5px,
+        transparent 5px,
+        transparent 10px
+      );
+      opacity: 0.35;
+    }
+
+    .db-connector.solid {
+      opacity: 0.6;
+    }
+
+    /* Full dumbbell layout: label | [dot — line — dot] | badge */
+    .db-full {
+      display: grid;
+      grid-template-columns: 130px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .db-full:last-of-type { border-bottom: none; }
+
+    .db-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .db-endpoint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-width: 52px;
+    }
+
+    .db-endpoint .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .db-endpoint .val {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .db-endpoint .yr {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .db-line {
+      flex: 1;
+      height: 2px;
+    }
+
+    .db-line.dashed {
+      background: repeating-linear-gradient(
+        90deg,
+        #C8D4E6 0px, #C8D4E6 5px,
+        transparent 5px, transparent 10px
+      );
+    }
+
+    .db-line.solid-teal  { background: var(--teal); opacity: 0.5; }
+    .db-line.solid-amber { background: var(--amber); opacity: 0.5; }
+
+    .sig-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .sig-yes { background: var(--teal-soft); color: var(--teal); }
+    .sig-no  { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+    .sig-lim { background: var(--amber-soft); color: var(--amber); }
+
+    /* Ranking bars */
+    .ranking-panel {
+      padding: 32px 28px;
+    }
+
+    .rank-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+
+    .rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .rank-item {
+      display: grid;
+      grid-template-columns: 1fr 44px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .rank-name {
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin-bottom: 5px;
+    }
+
+    .rank-bar-wrap {
+      height: 6px;
+      border-radius: 999px;
+      background: var(--line);
+      overflow: hidden;
+    }
+
+    .rank-bar {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .rank-pct {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--ink);
+      text-align: right;
+    }
+
+    /* Territory */
+    .territory-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .territory-col {
+      background: var(--paper);
+      padding: 32px 22px;
+    }
+
+    .territory-col h4 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    .territory-stat {
+      margin-bottom: 16px;
+    }
+
+    .territory-stat .lbl {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .territory-stat .val {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .territory-stat .unit {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 500;
+      margin-left: 2px;
+    }
+
+    .territory-ipm {
+      display: inline-block;
+      padding: 5px 12px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    /* NNA incidence visual */
+    .nna-visual {
+      padding: 32px 28px;
+    }
+
+    .age-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .age-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 52px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .age-label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
+
+    .age-bar-wrap {
+      height: 28px;
+      border-radius: 6px;
+      background: var(--bg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .age-bar {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.8s ease;
+    }
+
+    .age-bar.highlight { background: var(--blue); }
+    .age-bar.normal    { background: #C8D4E6; }
+
+    .age-pct {
+      font-family: var(--mono);
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--ink);
+      text-align: right;
+    }
+
+    .nna-note {
+      margin-top: 20px;
+      padding: 14px 16px;
+      background: var(--blue-soft);
+      border-radius: 12px;
+      font-size: 0.84rem;
+      color: var(--blue);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* 2x2 matrix */
+    .matrix-panel {
+      padding: 28px;
+    }
+
+    .matrix-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 110px 1fr 1fr;
+      grid-template-rows: auto 1fr 1fr;
+      gap: 6px;
+    }
+
+    .m-axis {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-align: center;
+      padding: 6px 4px;
+      line-height: 1.4;
+    }
+
+    .m-cell {
+      border-radius: 14px;
+      padding: 18px 16px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .m-cell.neutral  { background: var(--bg); border: 1px solid var(--line); }
+    .m-cell.soft     { background: var(--teal-soft); }
+    .m-cell.critical { background: var(--rose-soft); }
+    .m-cell.plain    { background: #EEF2F8; }
+
+    .m-pct {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .m-cell.neutral  .m-pct { color: var(--muted); }
+    .m-cell.plain    .m-pct { color: var(--ink-soft); }
+    .m-cell.soft     .m-pct { color: var(--teal); }
+    .m-cell.critical .m-pct { color: var(--rose); }
+
+    .m-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .m-cell.soft  .m-desc { color: #1A5A50; }
+    .m-cell.critical .m-desc { color: #7A2020; }
+
+    /* Policy */
+    .policy-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .policy-card {
+      background: var(--paper);
+      padding: 22px 20px;
+      min-height: 100px;
+    }
+
+    .policy-card:last-child {
+      grid-column: span 2;
+    }
+
+    .policy-dim {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .policy-card p {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── CLOSING ───────────────────────────────────── */
+    .closing {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 32px;
+    }
+
+    .closing-inner {
+      max-width: 760px;
+      text-align: center;
+    }
+
+    .closing-inner .act-label {
+      margin-bottom: 28px;
+    }
+
+    .closing-inner h2 {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 5vw, 4.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 28px;
+    }
+
+    .closing-inner h2 em {
+      font-style: italic;
+      color: var(--blue);
+    }
+
+    .closing-inner p {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+      max-width: 580px;
+      margin: 0 auto 32px;
+    }
+
+    .closing-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--blue);
+      margin: 0 auto 32px;
+    }
+
+    /* ── DIVIDER ───────────────────────────────────── */
+    .divider {
+      width: min(var(--max), calc(100% - 64px));
+      margin: 0 auto;
+      border: none;
+      border-top: 1px solid var(--line);
+    }
+
+    /* ── FOOTER ────────────────────────────────────── */
+    footer {
+      width: min(var(--max), calc(100% - 64px));
+      margin: 0 auto;
+      padding: 32px 0 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* ── ANIMATIONS ────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .fade-up.d1 { animation-delay: 0.1s; }
+    .fade-up.d2 { animation-delay: 0.25s; }
+    .fade-up.d3 { animation-delay: 0.4s; }
+    .fade-up.d4 { animation-delay: 0.55s; }
+
+    /* ── RESPONSIVE ────────────────────────────────── */
+
+    /* Tablet: 900px */
+    @media (max-width: 900px) {
+      /* Layout */
+      .hero-inner  { grid-template-columns: 1fr; gap: 40px; }
+      .scrolly     { grid-template-columns: 1fr; gap: 0; }
+
+      /* Sticky → static, panel sits above steps */
+      .sticky-panel { position: relative; top: auto; border-radius: var(--radius) var(--radius) 0 0; border-bottom: none; }
+      .steps        { border-left: none; padding-left: 0; }
+      .step         { border-left: none; padding-left: 0; border-top: 2px solid var(--line); padding-top: 32px; min-height: auto; }
+      .step.active  { border-top-color: var(--blue); border-left: none; }
+
+      /* Grids */
+      .dim-grid      { grid-template-columns: repeat(2, 1fr); }
+      .policy-panel  { grid-template-columns: 1fr; }
+      .policy-card:last-child { grid-column: span 1; }
+
+      /* Nav */
+      nav { display: none; }
+
+      /* Hero */
+      /* hero-visual stays visible on tablet */
+      h1 { font-size: clamp(2.6rem, 8vw, 4rem); }
+
+      /* Matrix */
+      .matrix-grid { grid-template-columns: 80px 1fr 1fr; font-size: 0.75rem; }
+      .m-pct { font-size: 1.5rem; }
+      .m-desc { font-size: 0.7rem; }
+      .m-axis { font-size: 0.6rem; }
+    }
+
+    /* Mobile: 600px — overlay scrollytelling */
+    @media (max-width: 600px) {
+
+      /* ── BASE ── */
+      body { background: var(--bg); }
+      .topbar      { padding: 0 16px; }
+      .hero        { padding: 80px 16px 48px; }
+      .act-header  { padding: 56px 0 14px; width: calc(100% - 32px); }
+      .divider     { width: calc(100% - 32px); }
+      footer       { width: calc(100% - 32px); flex-direction: column; gap: 8px; }
+      .closing     { padding: 60px 16px; }
+      nav          { display: none; }
+
+      /* ── HERO ── */
+      .hero-inner  { display: flex; flex-direction: column-reverse; gap: 24px; }
+      .hero-visual { display: block !important; }
+      .uruguay-map-wrap { max-width: 260px; margin: 0 auto; }
+      h1           { font-size: clamp(2.2rem, 9vw, 3rem); }
+      .hero-lead   { font-size: 1rem; }
+      .act-header h2 { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+      .closing-inner h2 { font-size: clamp(2rem, 7vw, 3rem); }
+
+      /* ── SCROLLY: la sección entera ── */
+      .scrolly {
+        display: block;
+        width: 100%;
+        padding: 0;
+        position: relative;
+        overflow: visible;
+      }
+
+      /* El sticky-panel queda fijo detrás, ocupa toda la pantalla menos topbar */
+      .sticky-panel {
+        position: sticky;
+        top: 60px;
+        z-index: 1;
+        height: calc(100vh - 60px);
+        overflow: hidden;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        background: var(--paper);
+      }
+
+      /* Todos los paneles internos llenan el sticky */
+      .sticky-panel > * { height: 100%; }
+
+      /* ── STEPS: cada paso = 120vh para garantizar scroll suficiente ── */
+      .steps {
+        position: relative;
+        z-index: 2;
+        margin-top: calc(-100vh + 60px);
+        padding: 0;
+        /* padding-bottom garantiza que el último paso salga de pantalla */
+        padding-bottom: calc(100vh - 60px);
+      }
+
+      .step {
+        position: relative;
+        min-height: 120vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0 0 32px;
+        border: none;
+        background: transparent;
+      }
+
+      .step.active { border: none; }
+
+      /* Caja de texto flotante */
+      .step-text-box {
+        margin: 0 12px;
+        background: rgba(250, 249, 247, 0.93);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(32,24,32,0.09);
+        border-radius: 18px;
+        padding: 18px 18px 20px;
+        box-shadow: 0 8px 32px rgba(32,24,32,0.12);
+      }
+
+      /* h3 y p dentro del step van sin estilos propios en móvil */
+      .step h3 {
+        font-size: clamp(1.15rem, 4.5vw, 1.45rem);
+        line-height: 1.18;
+        margin-bottom: 10px;
+        letter-spacing: -0.02em;
+        background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+      }
+
+      .step p {
+        font-size: 0.92rem;
+        line-height: 1.62;
+        color: var(--ink-soft);
+        margin-top: 8px;
+        background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+      }
+
+      .step p:first-child { margin-top: 0; }
+
+      /* ── PANELES INTERNOS ── */
+
+      /* House grid */
+      .house-grid { grid-template-columns: 1fr 1fr; height: 100%; }
+      .house-col  { padding: 16px 12px; overflow-y: auto; }
+      .priv-item  { padding: 6px 8px; font-size: 0.76rem; }
+      .house-income { font-size: 0.7rem; margin-bottom: 10px; }
+      .house-label  { font-size: 0.68rem; }
+
+      /* Lens */
+      .lens-grid  { grid-template-columns: 1fr 1fr; height: calc(100% - 44px); }
+      .lens-card  { padding: 16px 14px; }
+      .lens-card h4 { font-size: 0.88rem; margin-bottom: 6px; }
+      .lens-card p  { font-size: 0.76rem; }
+      .lens-note    { font-size: 0.76rem; padding: 10px 14px; height: 44px; display: flex; align-items: center; justify-content: center; }
+      .lens-icon    { width: 36px; height: 36px; font-size: 1.1rem; margin-bottom: 10px; }
+
+      /* Pipeline */
+      .pipeline { padding: 16px; gap: 7px; overflow-y: auto; height: 100%; }
+      .pipe-step { padding: 10px 12px; grid-template-columns: 32px 1fr; gap: 8px; }
+      .pipe-n    { width: 32px; height: 32px; font-size: 0.8rem; border-radius: 10px; }
+      .pipe-step strong { font-size: 0.82rem; }
+      .pipe-step span   { font-size: 0.72rem; }
+
+      /* Dimensions */
+      .dim-grid { 
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: 1fr 1fr;
+        height: 100%; 
+        overflow: hidden;
+      }
+      .dim-card:nth-child(1) { grid-column: span 2; }
+      .dim-card:nth-child(2) { grid-column: span 2; }
+      .dim-card:nth-child(3) { grid-column: span 2; }
+      .dim-card:nth-child(4) { grid-column: span 3; }
+      .dim-card:nth-child(5) { grid-column: span 3; }
+      .dim-card { padding: 10px 8px; background: var(--paper); }
+      .dim-card h4 { font-size: 0.7rem; margin-bottom: 6px; }
+      .dim-card li { font-size: 0.62rem; padding: 3px 5px; }
+      .dim-icon { width: 28px; height: 28px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 6px; }
+
+      /* Thresholds */
+      .threshold-list { padding: 16px; gap: 8px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .threshold-card { padding: 12px 14px; }
+      .threshold-card h4 { font-size: 0.84rem; margin-bottom: 4px; }
+      .threshold-card p  { font-size: 0.74rem; }
+      .threshold-tag { font-size: 0.62rem; margin-bottom: 7px; }
+
+      /* Home unit */
+      .home-unit { padding: 20px 16px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .person-body { width: 30px; height: 44px; }
+      .person-head { width: 22px; height: 22px; }
+      .family-row  { gap: 10px; margin-bottom: 20px; }
+      .house-alert-box { font-size: 0.82rem; padding: 12px 14px; }
+
+      /* Umbral */
+      .umbral-panel { padding: 16px; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+      .umbral-label { font-size: 0.6rem; margin-bottom: 10px; }
+      .umbral-privaciones { gap: 5px; margin-bottom: 8px; }
+      .upriv { padding: 7px 10px; font-size: 0.78rem; }
+      .umbral-resto { padding: 8px 10px; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+      .uresto-item  { font-size: 0.62rem; padding: 2px 5px; }
+      .umbral-nota  { font-size: 0.74rem; padding: 8px 10px; }
+
+      /* Stats */
+      .stats-panel { padding: 20px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .stat-row    { padding: 14px 0; }
+      .stat-value  { font-size: 2.6rem; }
+      .stat-label  { font-size: 0.66rem; }
+      .stat-desc   { font-size: 0.76rem; }
+
+      /* Dumbbell */
+      .slope-panel { padding: 16px 18px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .slope-title { margin-bottom: 14px; }
+      .db-full     { grid-template-columns: 90px 1fr auto; gap: 6px; padding: 14px 0; }
+      .db-label    { font-size: 0.72rem; }
+      .db-endpoint .val { font-size: 0.84rem; }
+      .db-endpoint .yr  { font-size: 0.6rem; }
+      .sig-badge   { font-size: 0.6rem; padding: 3px 6px; }
+
+      /* Ranking */
+      .ranking-panel { padding: 16px 18px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .rank-title  { font-size: 1.1rem; margin-bottom: 12px; }
+      .rank-item   { grid-template-columns: 1fr 38px; gap: 8px; }
+      .rank-name   { font-size: 0.76rem; }
+      .rank-pct    { font-size: 0.74rem; }
+      .rank-bar-wrap { height: 5px; }
+
+      /* Matrix */
+      .matrix-panel   { padding: 16px; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+      .matrix-title   { font-size: 0.82rem; margin-bottom: 14px; }
+      .matrix-desktop { display: none !important; }
+      .matrix-mobile  { display: block !important; }
+      .mm-col-headers { grid-template-columns: 56px 1fr 1fr; }
+      .mm-col-header  { font-size: 0.54rem; }
+      .mm-row         { grid-template-columns: 56px 1fr 1fr; margin-bottom: 5px; }
+      .mm-row-label   { font-size: 0.54rem; }
+      .mm-cell        { padding: 9px 8px; border-radius: 10px; }
+      .mm-cell .m-pct  { font-size: 1.25rem; }
+      .mm-cell .m-desc { font-size: 0.62rem; }
+
+      /* Territory */
+      .territory-panel { grid-template-columns: 1fr 1fr; height: 100%; }
+      .territory-col   { padding: 16px 12px; display: flex; flex-direction: column; justify-content: center; }
+      .territory-col h4 { font-size: 1rem; margin-bottom: 14px; }
+      .territory-stat .val { font-size: 2rem; }
+      .territory-stat .lbl { font-size: 0.6rem; }
+      .territory-ipm   { font-size: 0.7rem; margin-top: 8px; }
+      .territory-stat  { margin-bottom: 12px; }
+
+      /* NNA bars */
+      .nna-visual { padding: 20px 18px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .age-row    { grid-template-columns: 82px 1fr 42px; gap: 8px; margin-bottom: 4px; }
+      .age-label  { font-size: 0.74rem; }
+      .age-bar-wrap { height: 24px; }
+      .age-pct    { font-size: 0.78rem; }
+      .nna-note   { font-size: 0.78rem; padding: 10px 12px; margin-top: 16px; }
+
+      /* Policy */
+      .policy-panel { grid-template-columns: 1fr 1fr; height: 100%; align-content: center; }
+      .policy-card  { padding: 14px; min-height: auto; }
+      .policy-card:last-child { grid-column: span 2; }
+      .policy-dim   { font-size: 0.62rem; margin-bottom: 5px; }
+      .policy-card p { font-size: 0.78rem; }
+    }
+    /* Umbral panel — reemplaza rule-panel */
+    .umbral-panel {
+      padding: 28px;
+    }
+
+    .umbral-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .umbral-privaciones {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .upriv {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .upriv.activa {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border: 1px solid rgba(107,58,107,0.15);
+    }
+
+    .upriv-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--blue);
+    }
+
+    .umbral-resto {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--bg);
+      margin-bottom: 14px;
+    }
+
+    .uresto-item {
+      font-size: 0.72rem;
+      color: var(--muted);
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(32,24,32,0.05);
+      font-family: var(--mono);
+      opacity: 0.7;
+    }
+
+    .umbral-nota {
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--blue-soft);
+      font-size: 0.82rem;
+      color: var(--blue);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+
+    .uruguay-map-wrap {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      filter: drop-shadow(0 20px 60px rgba(107,58,107,0.12));
+    }
+
+    .uruguay-map-wrap svg {
+      width: 100%;
+      height: auto;
+    }
+
+
+    /* Matrix desktop/mobile split */
+    .matrix-desktop { display: grid; }
+    .matrix-mobile  { display: none; }
+
+    .mm-col-headers {
+      display: grid;
+      grid-template-columns: 64px 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .mm-col-header {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.4;
+      padding: 4px 2px;
+    }
+
+    .mm-row {
+      display: grid;
+      grid-template-columns: 64px 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .mm-row-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-align: right;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 6px;
+    }
+
+    .mm-cell {
+      border-radius: 12px;
+      padding: 12px 10px;
+    }
+
+    .mm-cell.neutral  { background: var(--bg); border: 1px solid var(--line); }
+    .mm-cell.soft     { background: var(--teal-soft); }
+    .mm-cell.critical { background: var(--rose-soft); }
+    .mm-cell.plain    { background: #EEF2F8; }
+
+    .mm-cell .m-pct  { font-family: var(--serif); font-size: 1.3rem; font-weight: 900; letter-spacing: -0.04em; line-height: 1; margin-bottom: 4px; }
+    .mm-cell .m-desc { font-size: 0.68rem; line-height: 1.35; color: var(--muted); }
+
+    .mm-cell.neutral  .m-pct { color: var(--muted); }
+    .mm-cell.plain    .m-pct { color: var(--ink-soft); }
+    .mm-cell.soft     .m-pct { color: var(--teal); }
+    .mm-cell.critical .m-pct { color: var(--rose); }
+    .mm-cell.soft  .m-desc { color: #1A5A50; }
+    .mm-cell.critical .m-desc { color: #7A2020; }
+
+    @media (max-width: 600px) {
+      .matrix-desktop { display: none !important; }
+      .matrix-mobile  { display: block !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="brand">Índice de Pobreza Multidimensional · INE · Uruguay 2025</div>
+    <nav aria-label="Secciones">
+      <a href="#acto-1">Mirar</a>
+      <a href="#acto-2">Construir</a>
+      <a href="#acto-3">Resultados</a>
+      <a href="#acto-4">Interpretar</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ══ HERO ══════════════════════════════════════ -->
+    <section class="hero" id="inicio">
+      <div class="hero-inner">
+        <div>
+          <h1 class="fade-up d2">Pobreza<br><em>multidimensional</em><br>en Uruguay</h1>
+          <p class="hero-lead fade-up d3">Más allá del ingreso: qué significa ser pobre en Uruguay cuando el dinero no cuenta toda la historia.</p>
+          <div class="hero-cta fade-up d4">
+            <a class="btn btn-primary" href="#acto-1">Empezar el recorrido</a>
+            <a class="btn btn-secondary" href="#acto-3">Ir a resultados</a>
+          </div>
+        </div>
+
+        <div class="hero-visual fade-up d3">
+          <div class="uruguay-map-wrap">
+            <svg viewBox="0 0 440 520" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa de Uruguay con las cinco dimensiones del IPM">
+
+  <!-- Sombra -->
+  <path d="M 194.5 451.9 L 188.1 454.5 L 181.0 448.7 L 185.6 444.3 L 172.8 442.4 L 151.8 433.9 L 136.5 416.7 L 116.0 414.9 L 111.3 417.2 L 107.9 414.7 L 91.4 418.7 L 82.5 401.2 L 77.9 398.4 L 76.3 394.3 L 69.1 393.2 L 67.1 384.8 L 56.0 372.1 L 55.0 340.2 L 57.7 334.2 L 55.9 326.5 L 60.2 323.1 L 59.9 307.9 L 74.0 304.0 L 77.5 299.3 L 79.7 290.8 L 76.8 282.9 L 74.8 282.2 L 70.2 254.6 L 70.5 248.7 L 76.6 237.5 L 75.1 226.2 L 72.1 221.3 L 73.7 213.4 L 70.0 203.4 L 78.0 199.1 L 83.6 180.4 L 77.7 168.5 L 83.8 162.9 L 83.7 157.5 L 88.9 151.7 L 88.6 149.4 L 90.4 150.0 L 90.3 147.3 L 92.8 151.3 L 96.3 151.9 L 92.1 146.9 L 94.9 147.5 L 95.5 146.8 L 95.5 146.7 L 95.7 146.3 L 95.6 146.3 L 91.7 144.5 L 88.9 146.5 L 88.6 141.2 L 92.1 139.2 L 90.8 137.0 L 92.7 135.7 L 91.2 135.2 L 92.1 128.1 L 90.0 129.1 L 89.5 126.7 L 90.9 124.8 L 96.5 125.6 L 100.2 130.2 L 100.6 126.3 L 95.0 124.3 L 96.7 122.8 L 94.9 119.8 L 96.0 118.7 L 96.7 109.8 L 99.9 110.6 L 97.5 108.7 L 95.2 111.6 L 94.0 101.2 L 92.8 102.7 L 89.7 94.0 L 92.0 87.3 L 105.1 76.5 L 106.8 68.5 L 105.2 62.7 L 109.8 65.5 L 109.4 69.2 L 112.1 71.6 L 115.9 69.9 L 120.5 73.2 L 125.4 69.3 L 127.3 72.3 L 128.9 70.0 L 131.2 71.9 L 135.4 67.3 L 134.6 64.3 L 138.6 59.0 L 137.8 57.3 L 140.8 55.0 L 157.2 56.5 L 159.1 61.4 L 167.3 64.8 L 166.0 66.0 L 169.6 70.2 L 169.1 72.9 L 173.9 73.8 L 173.6 77.7 L 177.2 80.9 L 179.0 79.8 L 183.8 89.2 L 189.6 91.0 L 191.5 96.3 L 197.2 98.8 L 199.8 109.1 L 206.5 113.0 L 210.8 124.7 L 219.0 132.9 L 225.0 129.1 L 225.4 126.0 L 228.9 127.0 L 230.5 123.4 L 229.5 119.5 L 234.5 116.9 L 240.3 126.4 L 243.1 127.4 L 244.2 132.2 L 248.8 134.0 L 249.5 141.7 L 252.5 142.6 L 255.8 152.4 L 266.2 158.3 L 270.4 152.9 L 274.6 162.3 L 278.0 162.1 L 281.1 167.4 L 287.1 166.0 L 296.8 168.6 L 305.2 180.5 L 305.0 184.8 L 327.4 207.7 L 331.6 205.0 L 335.6 206.8 L 336.2 210.0 L 343.1 213.7 L 344.2 218.3 L 351.0 221.7 L 350.3 226.3 L 356.1 238.3 L 356.0 245.5 L 359.8 251.1 L 363.4 254.2 L 367.4 253.9 L 371.2 261.9 L 373.2 261.0 L 378.2 265.3 L 380.7 263.9 L 385.0 267.6 L 385.0 273.1 L 376.9 277.4 L 377.6 286.3 L 374.4 287.1 L 374.2 287.3 L 375.0 287.1 L 376.4 287.9 L 373.2 290.4 L 375.8 291.0 L 365.3 292.7 L 360.9 299.4 L 360.6 304.0 L 356.0 306.9 L 358.4 311.4 L 355.3 311.2 L 355.2 315.0 L 359.1 319.8 L 360.1 319.8 L 360.5 318.5 L 360.6 318.3 L 360.7 318.3 L 358.6 323.6 L 358.8 326.1 L 361.0 326.0 L 358.9 332.1 L 363.3 342.9 L 363.1 353.7 L 368.9 354.1 L 369.5 357.9 L 373.3 358.3 L 365.1 369.5 L 361.9 385.2 L 347.7 402.3 L 347.7 413.2 L 328.2 425.8 L 324.4 430.9 L 324.1 434.9 L 320.2 434.5 L 306.2 441.1 L 293.8 449.8 L 278.9 454.9 L 273.9 460.2 L 273.0 456.2 L 267.9 455.5 L 267.0 452.5 L 254.4 454.5 L 250.8 447.7 L 246.2 445.2 L 228.0 442.7 L 215.6 445.8 L 197.9 457.2 L 194.0 455.2 L 195.5 454.0 L 194.5 451.9 Z" fill="#DDD0DD" transform="translate(3,5)" opacity="0.2"/>
+
+  <!-- Silueta Uruguay -->
+  <path d="M 194.5 451.9 L 188.1 454.5 L 181.0 448.7 L 185.6 444.3 L 172.8 442.4 L 151.8 433.9 L 136.5 416.7 L 116.0 414.9 L 111.3 417.2 L 107.9 414.7 L 91.4 418.7 L 82.5 401.2 L 77.9 398.4 L 76.3 394.3 L 69.1 393.2 L 67.1 384.8 L 56.0 372.1 L 55.0 340.2 L 57.7 334.2 L 55.9 326.5 L 60.2 323.1 L 59.9 307.9 L 74.0 304.0 L 77.5 299.3 L 79.7 290.8 L 76.8 282.9 L 74.8 282.2 L 70.2 254.6 L 70.5 248.7 L 76.6 237.5 L 75.1 226.2 L 72.1 221.3 L 73.7 213.4 L 70.0 203.4 L 78.0 199.1 L 83.6 180.4 L 77.7 168.5 L 83.8 162.9 L 83.7 157.5 L 88.9 151.7 L 88.6 149.4 L 90.4 150.0 L 90.3 147.3 L 92.8 151.3 L 96.3 151.9 L 92.1 146.9 L 94.9 147.5 L 95.5 146.8 L 95.5 146.7 L 95.7 146.3 L 95.6 146.3 L 91.7 144.5 L 88.9 146.5 L 88.6 141.2 L 92.1 139.2 L 90.8 137.0 L 92.7 135.7 L 91.2 135.2 L 92.1 128.1 L 90.0 129.1 L 89.5 126.7 L 90.9 124.8 L 96.5 125.6 L 100.2 130.2 L 100.6 126.3 L 95.0 124.3 L 96.7 122.8 L 94.9 119.8 L 96.0 118.7 L 96.7 109.8 L 99.9 110.6 L 97.5 108.7 L 95.2 111.6 L 94.0 101.2 L 92.8 102.7 L 89.7 94.0 L 92.0 87.3 L 105.1 76.5 L 106.8 68.5 L 105.2 62.7 L 109.8 65.5 L 109.4 69.2 L 112.1 71.6 L 115.9 69.9 L 120.5 73.2 L 125.4 69.3 L 127.3 72.3 L 128.9 70.0 L 131.2 71.9 L 135.4 67.3 L 134.6 64.3 L 138.6 59.0 L 137.8 57.3 L 140.8 55.0 L 157.2 56.5 L 159.1 61.4 L 167.3 64.8 L 166.0 66.0 L 169.6 70.2 L 169.1 72.9 L 173.9 73.8 L 173.6 77.7 L 177.2 80.9 L 179.0 79.8 L 183.8 89.2 L 189.6 91.0 L 191.5 96.3 L 197.2 98.8 L 199.8 109.1 L 206.5 113.0 L 210.8 124.7 L 219.0 132.9 L 225.0 129.1 L 225.4 126.0 L 228.9 127.0 L 230.5 123.4 L 229.5 119.5 L 234.5 116.9 L 240.3 126.4 L 243.1 127.4 L 244.2 132.2 L 248.8 134.0 L 249.5 141.7 L 252.5 142.6 L 255.8 152.4 L 266.2 158.3 L 270.4 152.9 L 274.6 162.3 L 278.0 162.1 L 281.1 167.4 L 287.1 166.0 L 296.8 168.6 L 305.2 180.5 L 305.0 184.8 L 327.4 207.7 L 331.6 205.0 L 335.6 206.8 L 336.2 210.0 L 343.1 213.7 L 344.2 218.3 L 351.0 221.7 L 350.3 226.3 L 356.1 238.3 L 356.0 245.5 L 359.8 251.1 L 363.4 254.2 L 367.4 253.9 L 371.2 261.9 L 373.2 261.0 L 378.2 265.3 L 380.7 263.9 L 385.0 267.6 L 385.0 273.1 L 376.9 277.4 L 377.6 286.3 L 374.4 287.1 L 374.2 287.3 L 375.0 287.1 L 376.4 287.9 L 373.2 290.4 L 375.8 291.0 L 365.3 292.7 L 360.9 299.4 L 360.6 304.0 L 356.0 306.9 L 358.4 311.4 L 355.3 311.2 L 355.2 315.0 L 359.1 319.8 L 360.1 319.8 L 360.5 318.5 L 360.6 318.3 L 360.7 318.3 L 358.6 323.6 L 358.8 326.1 L 361.0 326.0 L 358.9 332.1 L 363.3 342.9 L 363.1 353.7 L 368.9 354.1 L 369.5 357.9 L 373.3 358.3 L 365.1 369.5 L 361.9 385.2 L 347.7 402.3 L 347.7 413.2 L 328.2 425.8 L 324.4 430.9 L 324.1 434.9 L 320.2 434.5 L 306.2 441.1 L 293.8 449.8 L 278.9 454.9 L 273.9 460.2 L 273.0 456.2 L 267.9 455.5 L 267.0 452.5 L 254.4 454.5 L 250.8 447.7 L 246.2 445.2 L 228.0 442.7 L 215.6 445.8 L 197.9 457.2 L 194.0 455.2 L 195.5 454.0 L 194.5 451.9 Z"
+    fill="#F0E8F0"
+    stroke="#B890B8"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+  />
+
+  <!-- Montevideo dot -->
+  <circle cx="196.7" cy="454.1" r="4" fill="#C4923A"/>
+  <circle cx="196.7" cy="454.1" r="9" fill="#C4923A" opacity="0.18"/>
+
+  <!-- Chip: Educación — norte interior -->
+  <rect x="106" y="99" width="138" height="42" rx="21" fill="#EEE4EE"/>
+  <circle cx="128" cy="120" r="7" fill="#6B3A6B"/>
+  <text x="143" y="126" font-family="IBM Plex Sans,sans-serif" font-size="15" font-weight="500" fill="#6B3A6B">Educación</text>
+
+  <!-- Chip: Vivienda — este interior -->
+  <rect x="222" y="208" width="124" height="42" rx="21" fill="#F5EDD8"/>
+  <circle cx="244" cy="229" r="7" fill="#C4923A"/>
+  <text x="259" y="235" font-family="IBM Plex Sans,sans-serif" font-size="15" font-weight="500" fill="#C4923A">Vivienda</text>
+
+  <!-- Chip: Empleo — centro interior -->
+  <rect x="88" y="308" width="118" height="42" rx="21" fill="#E4EDE6"/>
+  <circle cx="110" cy="329" r="7" fill="#4A7A5A"/>
+  <text x="125" y="335" font-family="IBM Plex Sans,sans-serif" font-size="15" font-weight="500" fill="#4A7A5A">Empleo</text>
+
+  <!-- Chip: Servicios básicos — oeste interior -->
+  <rect x="46" y="208" width="172" height="42" rx="21" fill="#DCF0EC"/>
+  <circle cx="68" cy="229" r="7" fill="#5A8E82"/>
+  <text x="83" y="235" font-family="IBM Plex Sans,sans-serif" font-size="15" font-weight="500" fill="#5A8E82">Servicios básicos</text>
+
+  <!-- Chip: Protección social — sur interior -->
+  <rect x="130" y="381" width="184" height="42" rx="21" fill="#F0E4F0"/>
+  <circle cx="152" cy="402" r="7" fill="#A06AA0"/>
+  <text x="167" y="408" font-family="IBM Plex Sans,sans-serif" font-size="15" font-weight="500" fill="#A06AA0">Protección social</text>
+
+</svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ACTO 1 ══════════════════════════════════════ -->
+    <div class="act-header" id="acto-1">
+      <div class="act-label">Mirar más allá del ingreso</div>
+      <h2>La pobreza tiene más de una cara</h2>
+      <p>El ingreso permite observar una parte de la historia. Las condiciones de vida muestran otra.</p>
+    </div>
+
+    <!-- S1–S2: Dos hogares -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="house-grid">
+          <div class="house-col">
+            <div class="house-label">Hogar A</div>
+            <div class="house-income">Ingreso similar</div>
+            <div class="priv-list">
+              <div class="priv-item ok"><span class="ic">✓</span> Acceso a internet</div>
+              <div class="priv-item ok"><span class="ic">✓</span> Empleo formal</div>
+              <div class="priv-item ok"><span class="ic">✓</span> Sin hacinamiento</div>
+              <div class="priv-item ok"><span class="ic">✓</span> Vivienda en buen estado</div>
+              <div class="priv-item ok"><span class="ic">✓</span> Trayectoria educativa completa</div>
+            </div>
+          </div>
+          <div class="house-col">
+            <div class="house-label">Hogar B</div>
+            <div class="house-income">Ingreso similar</div>
+            <div class="priv-list">
+              <div class="priv-item bad"><span class="ic">×</span> Sin internet</div>
+              <div class="priv-item bad"><span class="ic">×</span> Informalidad laboral</div>
+              <div class="priv-item bad"><span class="ic">×</span> Hacinamiento</div>
+              <div class="priv-item bad"><span class="ic">×</span> Problemas de vivienda</div>
+              <div class="priv-item bad"><span class="ic">×</span> Rezago educativo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step active">
+          <h3>Dos hogares pueden tener ingresos parecidos.</h3>
+          <p>Pero vivir condiciones muy distintas. El hogar A tiene acceso a internet, empleo formal, vivienda sin problemas. El hogar B no tiene internet, vive en hacinamiento, trabaja en la informalidad.</p>
+        </div>
+        <div class="step">
+          <h3>La pobreza monetaria los ve igual.</h3>
+          <p>Esa medición sigue siendo indispensable. Pero no siempre captura privaciones concretas que el ingreso no refleja directamente.</p>
+          <p><strong>El IPM los distingue.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S3: Dos preguntas -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="lens-grid">
+          <div class="lens-card">
+            <div class="lens-icon">$</div>
+            <h4>Pobreza monetaria</h4>
+            <p>Pregunta si los ingresos del hogar alcanzan para cubrir un umbral mínimo. Es más sensible a cambios de corto plazo.</p>
+          </div>
+          <div class="lens-card">
+            <div class="lens-icon">◎</div>
+            <h4>Pobreza multidimensional</h4>
+            <p>Pregunta qué condiciones concretas faltan en la vida cotidiana. Captura carencias más estructurales.</p>
+          </div>
+        </div>
+        <div class="lens-note">Dos preguntas distintas. Dos respuestas necesarias.</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>Dos medidas, dos preguntas.</h3>
+          <p>La pobreza monetaria pregunta: <strong>¿alcanzan los ingresos?</strong></p>
+          <p>La pobreza multidimensional pregunta: <strong>¿qué condiciones faltan?</strong></p>
+        </div>
+        <div class="step">
+          <h3>No son rivales.</h3>
+          <p>Son dos formas complementarias de mirar la misma realidad. Una es más sensible a cambios de corto plazo. La otra captura carencias estructurales que el ingreso no siempre refleja.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ══ ACTO 2 ══════════════════════════════════════ -->
+    <div class="act-header" id="acto-2">
+      <div class="act-label">Construir el índice</div>
+      <h2>Una arquitectura de decisiones</h2>
+      <p>El IPM no es una caja negra. Es una serie de decisiones transparentes: qué observar, cómo medirlo y cuándo cruzar el umbral.</p>
+    </div>
+
+    <!-- S4: Pipeline -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="pipeline">
+          <div class="pipe-step">
+            <div class="pipe-n">1</div>
+            <div><strong>Propósito</strong><span>Complementar la medición monetaria y monitorear privaciones estructurales.</span></div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-n">2</div>
+            <div><strong>Fuente</strong><span>Encuesta Continua de Hogares (ECH), relevamiento oficial anual del INE.</span></div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-n">3</div>
+            <div><strong>Unidad</strong><span>El hogar como unidad de identificación de privaciones.</span></div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-n">4</div>
+            <div><strong>Dimensiones e indicadores</strong><span>Cinco dimensiones, quince condiciones concretas.</span></div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-n">5</div>
+            <div><strong>Umbral</strong><span>Cuatro privaciones o más → pobre multidimensional.</span></div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-n">6</div>
+            <div><strong>Resultados</strong><span>Cuántas personas son pobres y cuántas privaciones acumulan en promedio.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>La lógica del índice.</h3>
+          <p>El IPM de Uruguay es una medida oficial elaborada por el INE a partir de la Encuesta Continua de Hogares.</p>
+          <p>La lógica es directa: se observan quince condiciones concretas de la vida cotidiana. Si un hogar no las cumple, acumula privaciones. Cuando esa acumulación supera un límite, el hogar es pobre multidimensional.</p>
+          <p><strong>Contar. Acumular. Cruzar un límite.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S5–S6: Dimensiones -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="dim-grid">
+          <div class="dim-card">
+            <div class="dim-icon">🎓</div>
+            <h4>Educación</h4>
+            <ul>
+              <li>Vinculación educativa</li>
+              <li>Rezago</li>
+              <li>Años de escolarización</li>
+            </ul>
+          </div>
+          <div class="dim-card">
+            <div class="dim-icon">🏠</div>
+            <h4>Vivienda</h4>
+            <ul>
+              <li>Hacinamiento</li>
+              <li>Tenencia insegura</li>
+              <li>Materialidad y problemas</li>
+            </ul>
+          </div>
+          <div class="dim-card">
+            <div class="dim-icon">💧</div>
+            <h4>Servicios básicos</h4>
+            <ul>
+              <li>Internet</li>
+              <li>Calefacción</li>
+              <li>Saneamiento</li>
+            </ul>
+          </div>
+          <div class="dim-card">
+            <div class="dim-icon">🛡️</div>
+            <h4>Protección social</h4>
+            <ul>
+              <li>Pensiones</li>
+              <li>Cuidados</li>
+              <li>Seg. social menores</li>
+            </ul>
+          </div>
+          <div class="dim-card">
+            <div class="dim-icon">💼</div>
+            <h4>Empleo</h4>
+            <ul>
+              <li>Informalidad</li>
+              <li>Desempleo y desaliento</li>
+              <li>Subempleo</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>El índice observa cinco dimensiones.</h3>
+          <p>Educación, condiciones habitacionales, servicios básicos del hogar, protección social y empleo.</p>
+          <p>Ninguna tiene más peso que otra. Juntas forman una imagen completa de lo que puede faltar en un hogar.</p>
+        </div>
+        <div class="step">
+          <h3>Cada dimensión se mide con tres indicadores concretos.</h3>
+          <p>En total, quince condiciones. Quince preguntas sobre la vida cotidiana de un hogar.</p>
+          <p>La estructura es simple y transparente: cinco dimensiones, quince indicadores, todos con la misma ponderación.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S7: Umbrales -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="threshold-list">
+          <div class="threshold-card">
+            <span class="threshold-tag">Hacinamiento</span>
+            <h4>Más de dos personas por habitación para dormir.</h4>
+            <p>Si se cumple esta condición, el hogar está privado en hacinamiento.</p>
+          </div>
+          <div class="threshold-card">
+            <span class="threshold-tag">Internet</span>
+            <h4>El hogar no tiene acceso a internet de ningún tipo.</h4>
+            <p>Ni fija ni móvil. La ausencia de acceso cuenta como privación.</p>
+          </div>
+          <div class="threshold-card">
+            <span class="threshold-tag">Informalidad</span>
+            <h4>Al menos una persona adulta ocupada trabaja sin registro.</h4>
+            <p>El hogar queda privado en el indicador de informalidad laboral.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>Cada indicador tiene una regla.</h3>
+          <p>Para medir una privación, hay que definir un umbral observable. No se trata de una impresión general.</p>
+          <p>Cada indicador tiene una definición precisa: <strong>privado o no privado</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S8: Hogar como unidad -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="home-unit">
+          <div class="family-row">
+            <div class="person-fig neutral">
+              <div class="person-head"></div>
+              <div class="person-body"></div>
+            </div>
+            <div class="person-fig alert">
+              <div class="person-head"></div>
+              <div class="person-body"></div>
+            </div>
+            <div class="person-fig neutral">
+              <div class="person-head"></div>
+              <div class="person-body"></div>
+            </div>
+            <div class="person-fig neutral">
+              <div class="person-head"></div>
+              <div class="person-body"></div>
+            </div>
+          </div>
+          <div class="house-alert-box">
+            Una privación individual puede expresar una condición compartida por todo el hogar.
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>La unidad es el hogar.</h3>
+          <p>El IPM identifica privaciones a nivel del hogar. Algunas afectan directamente a una persona, pero expresan una condición compartida por quienes viven con ella.</p>
+          <p>Si el hogar no tiene internet, <strong>todos sus integrantes viven sin internet</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S9: Regla del umbral -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="umbral-panel">
+          <div class="umbral-label">Cuatro privaciones · umbral de pobreza multidimensional</div>
+          <div class="umbral-privaciones">
+            <div class="upriv activa"><div class="upriv-dot"></div>Sin acceso a internet</div>
+            <div class="upriv activa"><div class="upriv-dot"></div>Hacinamiento en la vivienda</div>
+            <div class="upriv activa"><div class="upriv-dot"></div>Informalidad laboral</div>
+            <div class="upriv activa"><div class="upriv-dot"></div>Adultos sin estudios completos</div>
+          </div>
+          <div class="umbral-resto">
+            <span class="uresto-item">Tenencia insegura</span>
+            <span class="uresto-item">Saneamiento</span>
+            <span class="uresto-item">Calefacción</span>
+            <span class="uresto-item">Pensiones</span>
+            <span class="uresto-item">Cuidados</span>
+            <span class="uresto-item">Rezago educativo</span>
+            <span class="uresto-item">Desempleo</span>
+            <span class="uresto-item">Subempleo</span>
+            <span class="uresto-item">Materialidad</span>
+            <span class="uresto-item">Vinculación educativa</span>
+            <span class="uresto-item">Seg. social menores</span>
+          </div>
+          <div class="umbral-nota">Este hogar cruza el umbral. Cuatro privaciones bastan.</div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>Hay hogares con una privación. Hay hogares con dos, con tres.</h3>
+          <p>Pero hay un punto en el que la acumulación deja de ser algo aislado y se convierte en una condición estructural.</p>
+          <p>En el IPM uruguayo, ese punto son <strong>cuatro privaciones</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ══ ACTO 3 ══════════════════════════════════════ -->
+    <div class="act-header" id="acto-3">
+      <div class="act-label">Los resultados</div>
+      <h2>¿Qué dice el índice sobre Uruguay?</h2>
+      <p>La segunda medición permite mirar resultados nacionales, cambios entre años, composición de privaciones y diferencias territoriales.</p>
+    </div>
+
+    <!-- S10–S11: Cuántos y cuánto -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="stats-panel">
+          <div class="stat-row">
+            <div class="stat-label">Incidencia · 2025</div>
+            <div class="stat-value">18,7%</div>
+            <div class="stat-desc">de las personas son pobres multidimensionales</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-label">Privaciones promedio · entre pobres</div>
+            <div class="stat-value">5 de 15</div>
+            <div class="stat-desc">condiciones en promedio entre quienes son pobres</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-label">Índice combinado · 2025</div>
+            <div class="stat-value">0,063</div>
+            <div class="stat-desc">combina cuántos son pobres y cuánto acumulan</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>El índice captura dos cosas a la vez.</h3>
+          <p><strong>Cuántas personas son pobres multidimensionales.</strong> Y cuántas privaciones acumulan en promedio quienes lo son.</p>
+          <p>Un país puede tener poca pobreza pero muy intensa. Otro puede tener mucha pobreza pero más leve. El índice combina ambas dimensiones en un solo número.</p>
+        </div>
+        <div class="step">
+          <h3>En 2025, el 18,7% de las personas eran pobres multidimensionales.</h3>
+          <p>Entre quienes son pobres, acumulan en promedio privaciones en 5 de cada 15 condiciones observadas.</p>
+          <p>El índice combinado se ubica en <strong>0,063</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S12: Evolución 2024–2025 -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="slope-panel">
+          <div class="slope-title">Evolución 2024 → 2025</div>
+
+          <!-- Incidencia -->
+          <div class="db-full">
+            <div class="db-label">Incidencia<br>de pobreza</div>
+            <div class="db-inner">
+              <div class="db-endpoint">
+                <div class="dot" style="background:var(--blue);opacity:.45"></div>
+                <div class="val">19,9%</div>
+                <div class="yr">2024</div>
+              </div>
+              <div class="db-line dashed"></div>
+              <div class="db-endpoint">
+                <div class="dot" style="background:var(--blue)"></div>
+                <div class="val">18,7%</div>
+                <div class="yr">2025</div>
+              </div>
+            </div>
+            <span class="sig-badge sig-no">No significativa</span>
+          </div>
+
+          <!-- Intensidad -->
+          <div class="db-full">
+            <div class="db-label">Intensidad<br>promedio</div>
+            <div class="db-inner">
+              <div class="db-endpoint">
+                <div class="dot" style="background:var(--teal);opacity:.45"></div>
+                <div class="val">34,1%</div>
+                <div class="yr">2024</div>
+              </div>
+              <div class="db-line solid-teal"></div>
+              <div class="db-endpoint">
+                <div class="dot" style="background:var(--teal)"></div>
+                <div class="val">33,4%</div>
+                <div class="yr">2025</div>
+              </div>
+            </div>
+            <span class="sig-badge sig-yes">Significativa ✓</span>
+          </div>
+
+          <!-- IPM -->
+          <div class="db-full">
+            <div class="db-label">Índice<br>combinado</div>
+            <div class="db-inner">
+              <div class="db-endpoint">
+                <div class="dot" style="background:var(--amber);opacity:.45"></div>
+                <div class="val">0,068</div>
+                <div class="yr">2024</div>
+              </div>
+              <div class="db-line solid-amber"></div>
+              <div class="db-endpoint">
+                <div class="dot" style="background:var(--amber)"></div>
+                <div class="val">0,063</div>
+                <div class="yr">2025</div>
+              </div>
+            </div>
+            <span class="sig-badge sig-lim">En el límite</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>La segunda medición permite mirar evolución.</h3>
+          <p>Entre 2024 y 2025, la estimación puntual de la incidencia cae — de 19,9% a 18,7%. Sin embargo, esa reducción no es estadísticamente significativa: podría deberse al margen de error de la encuesta.</p>
+        </div>
+        <div class="step">
+          <h3>La señal más sólida es la caída de la intensidad.</h3>
+          <p>La caída de 34,1% a 33,4% en la intensidad promedio sí es estadísticamente significativa. Entre quienes son pobres, la acumulación de privaciones disminuyó.</p>
+          <p><strong>La señal más sólida que deja 2025 no es que haya menos pobres, sino que quienes lo son acumulan algo menos de privaciones.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S13: Contribuciones -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="ranking-panel">
+          <div class="rank-title">Pobres, ¿de qué?</div>
+          <div class="rank-list">
+            <div class="rank-item">
+              <div>
+                <div class="rank-name">Años de escolarización</div>
+                <div class="rank-bar-wrap"><div class="rank-bar" style="width:92%;background:var(--blue)"></div></div>
+              </div>
+              <div class="rank-pct">18,5%</div>
+            </div>
+            <div class="rank-item">
+              <div>
+                <div class="rank-name">Informalidad laboral</div>
+                <div class="rank-bar-wrap"><div class="rank-bar" style="width:67%;background:var(--teal)"></div></div>
+              </div>
+              <div class="rank-pct">13,5%</div>
+            </div>
+            <div class="rank-item">
+              <div>
+                <div class="rank-name">Materialidad de la vivienda</div>
+                <div class="rank-bar-wrap"><div class="rank-bar" style="width:56%;background:var(--amber)"></div></div>
+              </div>
+              <div class="rank-pct">11,3%</div>
+            </div>
+            <div class="rank-item">
+              <div>
+                <div class="rank-name">Internet</div>
+                <div class="rank-bar-wrap"><div class="rank-bar" style="width:39%;background:#C8D4E6"></div></div>
+              </div>
+              <div class="rank-pct">7,7%</div>
+            </div>
+            <div class="rank-item">
+              <div>
+                <div class="rank-name">Subempleo</div>
+                <div class="rank-bar-wrap"><div class="rank-bar" style="width:38%;background:#C8D4E6"></div></div>
+              </div>
+              <div class="rank-pct">7,5%</div>
+            </div>
+            <div class="rank-item">
+              <div>
+                <div class="rank-name">Hacinamiento</div>
+                <div class="rank-bar-wrap"><div class="rank-bar" style="width:36%;background:#C8D4E6"></div></div>
+              </div>
+              <div class="rank-pct">7,3%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>El índice no termina en un número.</h3>
+          <p>También permite abrirlo y preguntar: <strong>¿qué privaciones explican más la pobreza multidimensional?</strong></p>
+        </div>
+        <div class="step">
+          <h3>Tres privaciones concentran el mayor peso.</h3>
+          <p>Años de escolarización, informalidad laboral y materialidad de la vivienda son las mayores contribuciones al índice en 2025.</p>
+          <p>Las carencias más decisivas para entender la pobreza multidimensional en Uruguay están en la educación, la calidad del empleo y las condiciones habitacionales.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S14 nueva: Cruce población general -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="matrix-panel">
+          <div class="matrix-title">Población total · Uruguay 2025</div>
+
+          <!-- Desktop -->
+          <div class="matrix-grid matrix-desktop">
+            <div class="m-axis"></div>
+            <div class="m-axis">Sin pobreza<br>multidimensional</div>
+            <div class="m-axis">Con pobreza<br>multidimensional</div>
+            <div class="m-axis" style="text-align:right;justify-content:flex-end;padding-right:10px;">Sin pobreza<br>monetaria</div>
+            <div class="m-cell neutral">
+              <div class="m-pct">73,9%</div>
+              <div class="m-desc">Sin ninguna de las dos pobrezas</div>
+            </div>
+            <div class="m-cell soft">
+              <div class="m-pct">9,4%</div>
+              <div class="m-desc">Privaciones estructurales que el ingreso no captura</div>
+            </div>
+            <div class="m-axis" style="text-align:right;justify-content:flex-end;padding-right:10px;">Con pobreza<br>monetaria</div>
+            <div class="m-cell plain">
+              <div class="m-pct">7,3%</div>
+              <div class="m-desc">Ingresos bajos, sin acumulación de privaciones</div>
+            </div>
+            <div class="m-cell critical">
+              <div class="m-pct">9,3%</div>
+              <div class="m-desc">Núcleo crítico: ambas pobrezas simultáneas</div>
+            </div>
+          </div>
+
+          <!-- Mobile -->
+          <div class="matrix-mobile">
+            <div class="mm-col-headers">
+              <div class="mm-col-header"></div>
+              <div class="mm-col-header">Sin pobreza<br>multidimensional</div>
+              <div class="mm-col-header">Con pobreza<br>multidimensional</div>
+            </div>
+            <div class="mm-row">
+              <div class="mm-row-label">Sin pob.<br>monetaria</div>
+              <div class="mm-cell neutral">
+                <div class="m-pct">73,9%</div>
+                <div class="m-desc">Sin ninguna de las dos pobrezas</div>
+              </div>
+              <div class="mm-cell soft">
+                <div class="m-pct">9,4%</div>
+                <div class="m-desc">Privaciones estructurales que el ingreso no captura</div>
+              </div>
+            </div>
+            <div class="mm-row">
+              <div class="mm-row-label">Con pob.<br>monetaria</div>
+              <div class="mm-cell plain">
+                <div class="m-pct">7,3%</div>
+                <div class="m-desc">Ingresos bajos, sin acumulación de privaciones</div>
+              </div>
+              <div class="mm-cell critical">
+                <div class="m-pct">9,3%</div>
+                <div class="m-desc">Núcleo crítico: ambas pobrezas simultáneas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>El índice también permite cruzar miradas.</h3>
+          <p>El IPM muestra de qué están privados los hogares. Al cruzarlo con la pobreza monetaria, aparece una imagen más completa.</p>
+          <p><strong>El ingreso no cuenta toda la historia.</strong></p>
+          <p>En 2025, el 9,4% de la población no era pobre por ingresos, pero sí pobre multidimensional. Otro 9,3% enfrentaba ambas pobrezas a la vez.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S14: Territorio -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="territory-panel">
+          <div class="territory-col">
+            <h4>Interior</h4>
+            <div class="territory-stat">
+              <div class="lbl">Incidencia</div>
+              <div class="val">20,2<span class="unit">%</span></div>
+            </div>
+            <div class="territory-stat">
+              <div class="lbl">Privaciones promedio entre pobres</div>
+              <div class="val">5 <span class="unit">de 15</span></div>
+            </div>
+            <div class="territory-ipm">Índice: 0,067</div>
+          </div>
+          <div class="territory-col">
+            <h4>Montevideo</h4>
+            <div class="territory-stat">
+              <div class="lbl">Incidencia</div>
+              <div class="val">16,4<span class="unit">%</span></div>
+            </div>
+            <div class="territory-stat">
+              <div class="lbl">Privaciones promedio entre pobres</div>
+              <div class="val">5 <span class="unit">de 15</span></div>
+            </div>
+            <div class="territory-ipm">Índice: 0,056</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>El territorio también importa.</h3>
+          <p>En 2025, la incidencia es mayor en el interior (20,2%) que en Montevideo (16,4%).</p>
+        </div>
+        <div class="step">
+          <h3>Pero la intensidad es parecida.</h3>
+          <p>Entre quienes son pobres, la intensidad promedio es similar en ambas regiones: en promedio, una persona pobre experimenta privaciones en <strong>5 de los 15 indicadores</strong>, independientemente de dónde viva.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ══ ACTO 4 ══════════════════════════════════════ -->
+    <div class="act-header" id="acto-4">
+      <div class="act-label">Para qué sirve</div>
+      <h2>De la medición a la acción</h2>
+      <p>El valor del índice no está solo en medir. Está en hacer visibles combinaciones de privaciones que orientan preguntas de política pública.</p>
+    </div>
+
+    <!-- S15: NNA incidencia -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="nna-visual">
+          <div class="age-bars">
+            <div class="age-row">
+              <div class="age-label">NNA (0–17)</div>
+              <div class="age-bar-wrap">
+                <div class="age-bar highlight" style="width:27.1%"></div>
+              </div>
+              <div class="age-pct">27,1%</div>
+            </div>
+            <div class="age-row">
+              <div class="age-label">18–64 años</div>
+              <div class="age-bar-wrap">
+                <div class="age-bar normal" style="width:16%"></div>
+              </div>
+              <div class="age-pct">~16%</div>
+            </div>
+            <div class="age-row">
+              <div class="age-label">65 o más</div>
+              <div class="age-bar-wrap">
+                <div class="age-bar normal" style="width:10%"></div>
+              </div>
+              <div class="age-pct">~10%</div>
+            </div>
+          </div>
+          <div class="nna-note">
+            Más de 1 de cada 4 niños, niñas y adolescentes es pobre multidimensional. Casi el doble que la tasa adulta.
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>La pobreza multidimensional no afecta igual a todos.</h3>
+          <p>En 2025, <strong>el 27,1% de los niños, niñas y adolescentes son pobres multidimensionales</strong> — más de uno de cada cuatro. Casi el doble que la tasa adulta.</p>
+          <p>Y no todos son los mismos que la pobreza monetaria identifica.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S16: Matriz 2x2 NNA -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="matrix-panel">
+          <div class="matrix-title">Niños, niñas y adolescentes · Uruguay 2025</div>
+
+          <!-- Desktop: grid 2x2 -->
+          <div class="matrix-grid matrix-desktop">
+            <div class="m-axis"></div>
+            <div class="m-axis">Sin pobreza<br>multidimensional</div>
+            <div class="m-axis">Con pobreza<br>multidimensional</div>
+            <div class="m-axis" style="text-align:right;justify-content:flex-end;padding-right:10px;">Sin pobreza<br>monetaria</div>
+            <div class="m-cell neutral">
+              <div class="m-pct">61,5%</div>
+              <div class="m-desc">Sin ninguna de las dos pobrezas</div>
+            </div>
+            <div class="m-cell soft">
+              <div class="m-pct">11,0%</div>
+              <div class="m-desc">Privaciones estructurales que el ingreso no captura</div>
+            </div>
+            <div class="m-axis" style="text-align:right;justify-content:flex-end;padding-right:10px;">Con pobreza<br>monetaria</div>
+            <div class="m-cell plain">
+              <div class="m-pct">11,4%</div>
+              <div class="m-desc">Ingresos bajos, sin acumulación de privaciones</div>
+            </div>
+            <div class="m-cell critical">
+              <div class="m-pct">16,1%</div>
+              <div class="m-desc">Núcleo crítico: ambas pobrezas simultáneas</div>
+            </div>
+          </div>
+
+          <!-- Mobile: 4 tarjetas apiladas -->
+          <div class="matrix-mobile">
+            <div class="mm-col-headers">
+              <div class="mm-col-header"></div>
+              <div class="mm-col-header">Sin pobreza<br>multidimensional</div>
+              <div class="mm-col-header">Con pobreza<br>multidimensional</div>
+            </div>
+            <div class="mm-row">
+              <div class="mm-row-label">Sin pobreza<br>monetaria</div>
+              <div class="mm-cell neutral">
+                <div class="m-pct">61,5%</div>
+                <div class="m-desc">Sin ninguna de las dos pobrezas</div>
+              </div>
+              <div class="mm-cell soft">
+                <div class="m-pct">11,0%</div>
+                <div class="m-desc">Privaciones estructurales que el ingreso no captura</div>
+              </div>
+            </div>
+            <div class="mm-row">
+              <div class="mm-row-label">Con pobreza<br>monetaria</div>
+              <div class="mm-cell plain">
+                <div class="m-pct">11,4%</div>
+                <div class="m-desc">Ingresos bajos, sin acumulación de privaciones</div>
+              </div>
+              <div class="mm-cell critical">
+                <div class="m-pct">16,1%</div>
+                <div class="m-desc">Núcleo crítico: ambas pobrezas simultáneas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>Cuatro de cada diez niños.</h3>
+          <p>Cuando se cruzan las dos medidas para NNA, aparece una imagen más completa.</p>
+          <p>El <strong>16,1%</strong> vive en hogares con ambas pobrezas. El <strong>11,0%</strong> es pobre multidimensional pero no monetario: sus ingresos superan la línea, pero acumulan privaciones estructurales.</p>
+        </div>
+        <div class="step">
+          <h3>Las dos medidas no cuentan la misma historia.</h3>
+          <p>En total, <strong>casi 4 de cada 10 niños, niñas y adolescentes viven en alguna forma de pobreza</strong>.</p>
+          <p>Por eso las dos medidas son necesarias. Cada una ilumina una parte de la realidad que la otra no alcanza.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S17: Política pública -->
+    <section class="scrolly">
+      <div class="sticky-panel">
+        <div class="policy-panel">
+          <div class="policy-card">
+            <div class="policy-dim">Educación</div>
+            <p>Trayectorias, vinculación y rezago educativo en adultos y niños.</p>
+          </div>
+          <div class="policy-card">
+            <div class="policy-dim">Vivienda</div>
+            <p>Hacinamiento, tenencia y condiciones materiales de la vivienda.</p>
+          </div>
+          <div class="policy-card">
+            <div class="policy-dim">Servicios básicos</div>
+            <p>Acceso a internet, calefacción y saneamiento adecuado.</p>
+          </div>
+          <div class="policy-card">
+            <div class="policy-dim">Protección social</div>
+            <p>Pensiones, cuidados y cobertura de seguridad social para menores.</p>
+          </div>
+          <div class="policy-card">
+            <div class="policy-dim">Empleo</div>
+            <p>Informalidad, desempleo y subempleo como frenos a la salida de la pobreza.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>El IPM no es solo una medida estadística.</h3>
+          <p>Es una forma de ordenar las prioridades de política pública.</p>
+          <p>Si la pobreza se expresa en educación, vivienda, servicios, protección social y empleo, las respuestas también tienen que dialogar con esas dimensiones.</p>
+        </div>
+        <div class="step">
+          <h3>Una política que solo transfiere ingresos puede no ser suficiente.</h3>
+          <p>El índice también permite algo más exigente: monitorear si la intensidad de las carencias baja, aunque la persona no salga todavía de la pobreza.</p>
+          <p>No obliga a mirar solo cuántos hogares entran o salen de una categoría, sino <strong>si disminuye la profundidad de lo que falta</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CIERRE ══════════════════════════════════════ -->
+    <section class="closing" id="cierre">
+      <div class="closing-inner">
+        
+        <div class="closing-rule"></div>
+        <h2>Medir mejor es hacer visible<br><em>lo que falta.</em></h2>
+        <p>El ingreso importa. Pero no siempre alcanza para contar toda la historia. El IPM permite ver no solo quiénes son pobres, sino también de qué están privados, dónde se concentra y con qué intensidad.</p>
+        <p>Lo que se vuelve visible puede discutirse, priorizarse e intervenirse.</p>
+        <a class="btn btn-primary" href="#inicio">Volver al inicio</a>
+      </div>
+    </section>
+
+  </main>
+
+  <hr class="divider">
+  <footer>
+    <span>Fuente: INE · Encuesta Continua de Hogares</span>
+    <span>Paula Pereda Suárez · Uruguay 2025</span>
+  </footer>
+
+  <script>
+    const isMobile = () => window.innerWidth <= 600;
+
+    // ── DESKTOP: step activation (highlight border) ──────────
+    const steps = document.querySelectorAll('.step');
+
+    const stepObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          steps.forEach(s => s.classList.remove('active'));
+          entry.target.classList.add('active');
+        }
+      });
+    }, {
+      threshold: 0.5,
+      rootMargin: '-20% 0px -20% 0px'
+    });
+
+    steps.forEach(step => stepObserver.observe(step));
+
+    // ── NAV highlight ─────────────────────────────────────────
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = ['acto-1','acto-2','acto-3','acto-4'].map(id => document.getElementById(id));
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach(a => {
+            a.style.color = a.getAttribute('href') === '#' + id ? 'var(--blue)' : '';
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(s => s && navObserver.observe(s));
+
+    // ── MOBILE: wrap step content in .step-text-box ───────────
+    function wrapStepsForMobile() {
+      if (!isMobile()) return;
+      steps.forEach(step => {
+        if (step.querySelector('.step-text-box')) return; // already wrapped
+        const children = Array.from(step.children);
+        const box = document.createElement('div');
+        box.className = 'step-text-box';
+        children.forEach(child => box.appendChild(child));
+        step.appendChild(box);
+      });
+    }
+
+    // ── MOBILE: swap sticky panel when step enters viewport ───
+    function setupMobileScroll() {
+      if (!isMobile()) return;
+
+      const scrollySections = document.querySelectorAll('.scrolly');
+
+      scrollySections.forEach(scrolly => {
+        const panel = scrolly.querySelector('.sticky-panel');
+        const sectionSteps = scrolly.querySelectorAll('.step');
+        if (!panel || sectionSteps.length === 0) return;
+
+        // All steps in this scrolly share the same panel — just show it
+        // The panel stays sticky while the steps scroll over it
+        // We just need to make sure the panel background matches the bg
+        panel.style.background = 'var(--paper)';
+      });
+
+      // Observe each step: when it enters, make sure its panel is visible
+      const mobileStepObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const step = entry.target;
+            step.classList.add('active');
+            // Find the panel in the same scrolly
+            const scrolly = step.closest('.scrolly');
+            if (scrolly) {
+              const panel = scrolly.querySelector('.sticky-panel');
+              if (panel) {
+                panel.style.opacity = '1';
+              }
+            }
+          } else {
+            entry.target.classList.remove('active');
+          }
+        });
+      }, {
+        threshold: 0.3,
+        rootMargin: '0px 0px -30% 0px'
+      });
+
+      steps.forEach(step => mobileStepObserver.observe(step));
+    }
+
+    // Init
+    wrapStepsForMobile();
+    setupMobileScroll();
+
+    // Re-init on resize (desktop <-> mobile switch)
+    let lastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (Math.abs(window.innerWidth - lastWidth) > 50) {
+        lastWidth = window.innerWidth;
+        wrapStepsForMobile();
+        setupMobileScroll();
+      }
+    });
+  </script>
+
+</body>
+</html>
