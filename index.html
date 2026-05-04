@@ -578,7 +578,7 @@
     .dim-card:nth-child(2) .dim-icon { background: var(--amber-soft); }
     .dim-card:nth-child(3) .dim-icon { background: var(--teal-soft); }
     .dim-card:nth-child(4) .dim-icon { background: var(--rose-soft); }
-    .dim-card:nth-child(5) .dim-icon { background: #EDF0F5; }
+    .dim-card:nth-child(5) .dim-icon { background: var(--teal-soft); }
 
     .dim-card h4 {
       font-size: 0.8rem;
@@ -1382,96 +1382,239 @@
       .m-axis { font-size: 0.6rem; }
     }
 
-    /* Mobile: 600px */
+    /* Mobile: 600px — overlay scrollytelling */
     @media (max-width: 600px) {
-      /* Hero: map on top, text below */
-      .hero-inner  { display: flex; flex-direction: column-reverse; gap: 24px; }
-      .hero-visual { display: block !important; }
-      .uruguay-map-wrap { max-width: 280px; margin: 0 auto; }
 
-      /* Spacing */
+      /* ── BASE ── */
+      body { background: var(--bg); }
       .topbar      { padding: 0 16px; }
       .hero        { padding: 80px 16px 48px; }
-      .scrolly     { width: calc(100% - 32px); padding-bottom: 48px; }
-      .act-header  { padding: 64px 0 16px; width: calc(100% - 32px); }
+      .act-header  { padding: 56px 0 14px; width: calc(100% - 32px); }
       .divider     { width: calc(100% - 32px); }
       footer       { width: calc(100% - 32px); flex-direction: column; gap: 8px; }
       .closing     { padding: 60px 16px; }
+      nav          { display: none; }
 
-      /* Typography */
+      /* ── HERO ── */
+      .hero-inner  { display: flex; flex-direction: column-reverse; gap: 24px; }
+      .hero-visual { display: block !important; }
+      .uruguay-map-wrap { max-width: 260px; margin: 0 auto; }
       h1           { font-size: clamp(2.2rem, 9vw, 3rem); }
       .hero-lead   { font-size: 1rem; }
-      .step h3     { font-size: clamp(1.5rem, 5vw, 2rem); }
-      .act-header h2 { font-size: clamp(2rem, 7vw, 3rem); }
+      .act-header h2 { font-size: clamp(1.8rem, 7vw, 2.6rem); }
       .closing-inner h2 { font-size: clamp(2rem, 7vw, 3rem); }
 
-      /* Panels */
-      .house-grid      { grid-template-columns: 1fr; }
-      .lens-grid       { grid-template-columns: 1fr; }
-      .territory-panel { grid-template-columns: 1fr; }
-      .dim-grid        { grid-template-columns: 1fr 1fr; }
+      /* ── SCROLLY: la sección entera ── */
+      .scrolly {
+        display: block;
+        width: 100%;
+        padding: 0;
+        position: relative;
+        overflow: visible;
+      }
 
-      /* Dumbbell */
-      .db-full { grid-template-columns: 100px 1fr auto; gap: 8px; }
-      .db-label { font-size: 0.76rem; }
-      .db-endpoint .val { font-size: 0.85rem; }
-      .sig-badge { font-size: 0.62rem; padding: 3px 7px; }
+      /* El sticky-panel queda fijo detrás, ocupa toda la pantalla menos topbar */
+      .sticky-panel {
+        position: sticky;
+        top: 60px;
+        z-index: 1;
+        height: calc(100vh - 60px);
+        overflow: hidden;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        background: var(--paper);
+      }
 
-      /* Matrix mobile — tarjetas apiladas */
-      .matrix-grid {
+      /* Todos los paneles internos llenan el sticky */
+      .sticky-panel > * { height: 100%; }
+
+      /* ── STEPS: cada paso = 120vh para garantizar scroll suficiente ── */
+      .steps {
+        position: relative;
+        z-index: 2;
+        margin-top: calc(-100vh + 60px);
+        padding: 0;
+        /* padding-bottom garantiza que el último paso salga de pantalla */
+        padding-bottom: calc(100vh - 60px);
+      }
+
+      .step {
+        position: relative;
+        min-height: 120vh;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        justify-content: flex-end;
+        padding: 0 0 32px;
+        border: none;
+        background: transparent;
       }
-      .matrix-grid .m-axis { display: none; }
-      .m-cell { min-height: auto; padding: 16px; }
-      .m-cell .m-label {
-        font-family: var(--mono);
-        font-size: 0.6rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        display: block;
-        margin-bottom: 6px;
-        opacity: 0.75;
+
+      .step.active { border: none; }
+
+      /* Caja de texto flotante */
+      .step-text-box {
+        margin: 0 12px;
+        background: rgba(250, 249, 247, 0.93);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(32,24,32,0.09);
+        border-radius: 18px;
+        padding: 18px 18px 20px;
+        box-shadow: 0 8px 32px rgba(32,24,32,0.12);
       }
-      .m-pct { font-size: 2rem; }
 
-      /* Stats */
-      .stat-value { font-size: 2.8rem; }
+      /* h3 y p dentro del step van sin estilos propios en móvil */
+      .step h3 {
+        font-size: clamp(1.15rem, 4.5vw, 1.45rem);
+        line-height: 1.18;
+        margin-bottom: 10px;
+        letter-spacing: -0.02em;
+        background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+      }
 
-      /* Circle grid */
-      .circle-grid { max-width: 220px; gap: 6px; }
-      .circ { font-size: 0.65rem; }
+      .step p {
+        font-size: 0.92rem;
+        line-height: 1.62;
+        color: var(--ink-soft);
+        margin-top: 8px;
+        background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+      }
 
-      /* Rule big number */
-      .rule-big { font-size: 4rem; }
+      .step p:first-child { margin-top: 0; }
+
+      /* ── PANELES INTERNOS ── */
+
+      /* House grid */
+      .house-grid { grid-template-columns: 1fr 1fr; height: 100%; }
+      .house-col  { padding: 16px 12px; overflow-y: auto; }
+      .priv-item  { padding: 6px 8px; font-size: 0.76rem; }
+      .house-income { font-size: 0.7rem; margin-bottom: 10px; }
+      .house-label  { font-size: 0.68rem; }
+
+      /* Lens */
+      .lens-grid  { grid-template-columns: 1fr 1fr; height: calc(100% - 44px); }
+      .lens-card  { padding: 16px 14px; }
+      .lens-card h4 { font-size: 0.88rem; margin-bottom: 6px; }
+      .lens-card p  { font-size: 0.76rem; }
+      .lens-note    { font-size: 0.76rem; padding: 10px 14px; height: 44px; display: flex; align-items: center; justify-content: center; }
+      .lens-icon    { width: 36px; height: 36px; font-size: 1.1rem; margin-bottom: 10px; }
 
       /* Pipeline */
-      .pipeline { padding: 20px 16px; }
-      .pipe-step { grid-template-columns: 36px 1fr; gap: 10px; }
+      .pipeline { padding: 16px; gap: 7px; overflow-y: auto; height: 100%; }
+      .pipe-step { padding: 10px 12px; grid-template-columns: 32px 1fr; gap: 8px; }
+      .pipe-n    { width: 32px; height: 32px; font-size: 0.8rem; border-radius: 10px; }
+      .pipe-step strong { font-size: 0.82rem; }
+      .pipe-step span   { font-size: 0.72rem; }
 
-      /* Ranking */
-      .ranking-panel { padding: 24px 16px; }
-      .rank-item { grid-template-columns: 1fr 40px; }
-
-      /* Territory */
-      .territory-col { padding: 24px 16px; }
-      .territory-stat .val { font-size: 2rem; }
-
-      /* NNA */
-      .age-row { grid-template-columns: 90px 1fr 44px; }
-      .age-label { font-size: 0.76rem; }
+      /* Dimensions */
+      .dim-grid { 
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: 1fr 1fr;
+        height: 100%; 
+        overflow: hidden;
+      }
+      .dim-card:nth-child(1) { grid-column: span 2; }
+      .dim-card:nth-child(2) { grid-column: span 2; }
+      .dim-card:nth-child(3) { grid-column: span 2; }
+      .dim-card:nth-child(4) { grid-column: span 3; }
+      .dim-card:nth-child(5) { grid-column: span 3; }
+      .dim-card { padding: 10px 8px; background: var(--paper); }
+      .dim-card h4 { font-size: 0.7rem; margin-bottom: 6px; }
+      .dim-card li { font-size: 0.62rem; padding: 3px 5px; }
+      .dim-icon { width: 28px; height: 28px; font-size: 0.85rem; border-radius: 8px; margin-bottom: 6px; }
 
       /* Thresholds */
-      .threshold-list { padding: 20px 16px; }
+      .threshold-list { padding: 16px; gap: 8px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .threshold-card { padding: 12px 14px; }
+      .threshold-card h4 { font-size: 0.84rem; margin-bottom: 4px; }
+      .threshold-card p  { font-size: 0.74rem; }
+      .threshold-tag { font-size: 0.62rem; margin-bottom: 7px; }
 
       /* Home unit */
-      .home-unit { padding: 24px 16px; }
-      .person-body { width: 32px; height: 44px; }
+      .home-unit { padding: 20px 16px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .person-body { width: 30px; height: 44px; }
       .person-head { width: 22px; height: 22px; }
-    }
+      .family-row  { gap: 10px; margin-bottom: 20px; }
+      .house-alert-box { font-size: 0.82rem; padding: 12px 14px; }
 
+      /* Umbral */
+      .umbral-panel { padding: 16px; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+      .umbral-label { font-size: 0.6rem; margin-bottom: 10px; }
+      .umbral-privaciones { gap: 5px; margin-bottom: 8px; }
+      .upriv { padding: 7px 10px; font-size: 0.78rem; }
+      .umbral-resto { padding: 8px 10px; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+      .uresto-item  { font-size: 0.62rem; padding: 2px 5px; }
+      .umbral-nota  { font-size: 0.74rem; padding: 8px 10px; }
+
+      /* Stats */
+      .stats-panel { padding: 20px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .stat-row    { padding: 14px 0; }
+      .stat-value  { font-size: 2.6rem; }
+      .stat-label  { font-size: 0.66rem; }
+      .stat-desc   { font-size: 0.76rem; }
+
+      /* Dumbbell */
+      .slope-panel { padding: 16px 18px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .slope-title { margin-bottom: 14px; }
+      .db-full     { grid-template-columns: 90px 1fr auto; gap: 6px; padding: 14px 0; }
+      .db-label    { font-size: 0.72rem; }
+      .db-endpoint .val { font-size: 0.84rem; }
+      .db-endpoint .yr  { font-size: 0.6rem; }
+      .sig-badge   { font-size: 0.6rem; padding: 3px 6px; }
+
+      /* Ranking */
+      .ranking-panel { padding: 16px 18px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .rank-title  { font-size: 1.1rem; margin-bottom: 12px; }
+      .rank-item   { grid-template-columns: 1fr 38px; gap: 8px; }
+      .rank-name   { font-size: 0.76rem; }
+      .rank-pct    { font-size: 0.74rem; }
+      .rank-bar-wrap { height: 5px; }
+
+      /* Matrix */
+      .matrix-panel   { padding: 16px; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+      .matrix-title   { font-size: 0.82rem; margin-bottom: 14px; }
+      .matrix-desktop { display: none !important; }
+      .matrix-mobile  { display: block !important; }
+      .mm-col-headers { grid-template-columns: 56px 1fr 1fr; }
+      .mm-col-header  { font-size: 0.54rem; }
+      .mm-row         { grid-template-columns: 56px 1fr 1fr; margin-bottom: 5px; }
+      .mm-row-label   { font-size: 0.54rem; }
+      .mm-cell        { padding: 9px 8px; border-radius: 10px; }
+      .mm-cell .m-pct  { font-size: 1.25rem; }
+      .mm-cell .m-desc { font-size: 0.62rem; }
+
+      /* Territory */
+      .territory-panel { grid-template-columns: 1fr 1fr; height: 100%; }
+      .territory-col   { padding: 16px 12px; display: flex; flex-direction: column; justify-content: center; }
+      .territory-col h4 { font-size: 1rem; margin-bottom: 14px; }
+      .territory-stat .val { font-size: 2rem; }
+      .territory-stat .lbl { font-size: 0.6rem; }
+      .territory-ipm   { font-size: 0.7rem; margin-top: 8px; }
+      .territory-stat  { margin-bottom: 12px; }
+
+      /* NNA bars */
+      .nna-visual { padding: 20px 18px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+      .age-row    { grid-template-columns: 82px 1fr 42px; gap: 8px; margin-bottom: 4px; }
+      .age-label  { font-size: 0.74rem; }
+      .age-bar-wrap { height: 24px; }
+      .age-pct    { font-size: 0.78rem; }
+      .nna-note   { font-size: 0.78rem; padding: 10px 12px; margin-top: 16px; }
+
+      /* Policy */
+      .policy-panel { grid-template-columns: 1fr 1fr; height: 100%; align-content: center; }
+      .policy-card  { padding: 14px; min-height: auto; }
+      .policy-card:last-child { grid-column: span 2; }
+      .policy-dim   { font-size: 0.62rem; margin-bottom: 5px; }
+      .policy-card p { font-size: 0.78rem; }
+    }
     /* Umbral panel — reemplaza rule-panel */
     .umbral-panel {
       padding: 28px;
@@ -2509,10 +2652,12 @@
   </footer>
 
   <script>
-    // Scroll-triggered step activation
+    const isMobile = () => window.innerWidth <= 600;
+
+    // ── DESKTOP: step activation (highlight border) ──────────
     const steps = document.querySelectorAll('.step');
 
-    const observer = new IntersectionObserver((entries) => {
+    const stepObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           steps.forEach(s => s.classList.remove('active'));
@@ -2524,9 +2669,9 @@
       rootMargin: '-20% 0px -20% 0px'
     });
 
-    steps.forEach(step => observer.observe(step));
+    steps.forEach(step => stepObserver.observe(step));
 
-    // Smooth progress on topbar nav
+    // ── NAV highlight ─────────────────────────────────────────
     const navLinks = document.querySelectorAll('nav a');
     const sections = ['acto-1','acto-2','acto-3','acto-4'].map(id => document.getElementById(id));
 
@@ -2535,13 +2680,83 @@
         if (entry.isIntersecting) {
           const id = entry.target.id;
           navLinks.forEach(a => {
-            a.style.color = a.getAttribute('href') === `#${id}` ? 'var(--blue)' : '';
+            a.style.color = a.getAttribute('href') === '#' + id ? 'var(--blue)' : '';
           });
         }
       });
     }, { threshold: 0.3 });
 
     sections.forEach(s => s && navObserver.observe(s));
+
+    // ── MOBILE: wrap step content in .step-text-box ───────────
+    function wrapStepsForMobile() {
+      if (!isMobile()) return;
+      steps.forEach(step => {
+        if (step.querySelector('.step-text-box')) return; // already wrapped
+        const children = Array.from(step.children);
+        const box = document.createElement('div');
+        box.className = 'step-text-box';
+        children.forEach(child => box.appendChild(child));
+        step.appendChild(box);
+      });
+    }
+
+    // ── MOBILE: swap sticky panel when step enters viewport ───
+    function setupMobileScroll() {
+      if (!isMobile()) return;
+
+      const scrollySections = document.querySelectorAll('.scrolly');
+
+      scrollySections.forEach(scrolly => {
+        const panel = scrolly.querySelector('.sticky-panel');
+        const sectionSteps = scrolly.querySelectorAll('.step');
+        if (!panel || sectionSteps.length === 0) return;
+
+        // All steps in this scrolly share the same panel — just show it
+        // The panel stays sticky while the steps scroll over it
+        // We just need to make sure the panel background matches the bg
+        panel.style.background = 'var(--paper)';
+      });
+
+      // Observe each step: when it enters, make sure its panel is visible
+      const mobileStepObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const step = entry.target;
+            step.classList.add('active');
+            // Find the panel in the same scrolly
+            const scrolly = step.closest('.scrolly');
+            if (scrolly) {
+              const panel = scrolly.querySelector('.sticky-panel');
+              if (panel) {
+                panel.style.opacity = '1';
+              }
+            }
+          } else {
+            entry.target.classList.remove('active');
+          }
+        });
+      }, {
+        threshold: 0.3,
+        rootMargin: '0px 0px -30% 0px'
+      });
+
+      steps.forEach(step => mobileStepObserver.observe(step));
+    }
+
+    // Init
+    wrapStepsForMobile();
+    setupMobileScroll();
+
+    // Re-init on resize (desktop <-> mobile switch)
+    let lastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (Math.abs(window.innerWidth - lastWidth) > 50) {
+        lastWidth = window.innerWidth;
+        wrapStepsForMobile();
+        setupMobileScroll();
+      }
+    });
   </script>
 
 </body>
