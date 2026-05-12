@@ -19,4 +19,5 @@ jobs:
           destination-github-username: 'paulapereda'
           destination-repository-name: 'paulapereda-portfolio'
           target-directory: 'pobreza-multidimensional'
-          destination-branch: main
+          target-branch: 'main'
+          create-target-branch-if-needed: 'true'
